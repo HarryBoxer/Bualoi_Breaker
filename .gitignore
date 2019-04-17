@@ -1,2 +1,6 @@
 *~
 __pycache__
+.DS_Store
+cirn.py
+mod.py
+mod2.py
