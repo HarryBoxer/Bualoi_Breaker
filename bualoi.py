@@ -6,11 +6,15 @@ from pyglet.window import key
 SCREEN_WIDTH = 980
 SCREEN_HEIGHT = 720
 
-vxs = []
-vys = []
-xs = []
-ys = []
-n = 1
+# CIRCLE_RADIUS = 20
+
+
+# vxs = []
+# vys = []
+# xs = []
+# ys = []
+# n = 1
+
 
 class ModelSprite(arcade.Sprite):
     def __init__(self, *args, **kwargs):
@@ -21,6 +25,7 @@ class ModelSprite(arcade.Sprite):
     def sync_with_model(self):
         if self.model:
             self.set_position(self.model.x, self.model.y)
+            self.angle = self.model.angle
 
     def draw(self):
         self.sync_with_model()
@@ -41,11 +46,21 @@ class BualoiWindow(arcade.Window):
 
         self.world = World(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-        self.pan = ModelSprite('images/handpan2.png', model = self.world.pan)
+        self.pan = ModelSprite('images/handpan3.png', model=self.world.pan)
+        self.circle = ModelSprite('images/cir.png', model=self.world.circle)
 
     def on_draw(self):
         arcade.start_render()
         self.pan.draw()
+        # self.circle.draw()
+
+    # def on_key_press(self, key, key_modifiers):
+    #     if not self.world.is_started():
+    #         self.world.start()
+    #     self.world.on_key_press(key, key_modifiers)
+
+    def on_key_press(self, key, key_modifiers):
+        self.world.on_key_press(key, key_modifiers)
 
     def update(self, delta):
         self.world.update(delta)
@@ -53,8 +68,6 @@ class BualoiWindow(arcade.Window):
 
 # def draw_circle(i):
 #     arcade.draw_circle_outline(xs, ys, 1, arcade.color.BLACK)
-
-
     # circle.move()
     # circle.draw()
 
