@@ -6,7 +6,7 @@ from pyglet.window import key
 SCREEN_WIDTH = 980
 SCREEN_HEIGHT = 720
 
-# CIRCLE_RADIUS = 20
+CIRCLE_RADIUS = 20
 
 
 # vxs = []
@@ -52,15 +52,16 @@ class BualoiWindow(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         self.pan.draw()
-        # self.circle.draw()
-
-    # def on_key_press(self, key, key_modifiers):
-    #     if not self.world.is_started():
-    #         self.world.start()
-    #     self.world.on_key_press(key, key_modifiers)
+        self.circle.draw()
 
     def on_key_press(self, key, key_modifiers):
-        self.world.on_key_press(key, key_modifiers)
+        if not self.world.is_started():
+            self.world.start()
+        if key == arcade.key.SPACE:
+            self.world.on_key_press(key, key_modifiers)
+
+    # def on_key_press(self, key, key_modifiers):
+    #     self.world.on_key_press(key, key_modifiers)
 
     def update(self, delta):
         self.world.update(delta)
