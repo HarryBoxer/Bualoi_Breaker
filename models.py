@@ -21,24 +21,25 @@ class Pan:
 
 
     def update(self, delta):
-        if self.angle <= -15 :
+        if self.angle <= -15  :
             pass
         else:
-            self.angle -= 5
+            # self.angle -= 5
+            self.angle -= 1
 
 
 class Circle:
     GRAVITY = 0.5 #a
     STARTING_VELOCITY = 9.8 #a
 
-    def __init__(self, world, x, y, vx, vy, r=20):
+    def __init__(self, world, x, y, dx, dy, r=20):
         self.world = world
         self.x = x
         self.y = y
-        self.vx = 0
-        self.vy = 9.8
+        self.dx = 0
+        self.dy = 0
         self.angle = 0
-        self.vy = Circle.STARTING_VELOCITY
+        self.dy = Circle.STARTING_VELOCITY
         self.r = r
 
     # def hit(self, other, hit_size):
@@ -46,45 +47,50 @@ class Circle:
 
     def move(self):
         pass
-        # self.y += self.vy
-        # self.vy -= 0.5
-        # self.vy -= Circle.GRAVITY
+        # self.y += self.dy
+        # self.dy -= 0.5
+        # self.dy -= Circle.GRAVITY
 
-        # self.x += self.vx
-        # self.y += self.vy
+        # self.x += self.dx
+        # self.y += self.dy
 
         # if self.x >= self.world.width - self.r:
-        #     self.vx -= 1
+        #     self.dx -= 1
         # elif self.y >= self.world.height - self.r:
-        #     self.vy -= 1
+        #     self.dy -= 1
         # elif self.x <= self.r:
-        #     self.vx += 1
+        #     self.dx += 1
         # elif self.y <= self.r:
-        #     self.vy += 1
+        #     self.dy += 1
 
     # def draw(self):
     #     # arcade.draw_circle_outline(self.x, self.y, 20, arcade.color.ORANGE_RED)
     #     arcade.draw_circle_filled(self.x, self.y, 20, arcade.color.BLACK)
     
     def update(self, delta, way):
+        # if self.dy > 0 :
+        #     self.dy -= 0.2
+
         if way == 0:
-            print("in way==0")
-            self.y += self.vy
-            self.vy -= 0.5
-            self.vy -= Circle.GRAVITY
+            self.y += self.dy
+            self.dy -= 0.5
+            self.dy -= Circle.GRAVITY
+            self.x -= self.dx
+
         elif way == 1:
             # เขียนโปรเจคไทล์ ตามมุมด้วยนะจ้ะ 
-            print("in way==1")
-            # self.y += 100
-            self.vy = 50
-            self.x += self.vx
+            self.dy = 20
+            self.y += self.dy
 
-            # self.vx = self.world.pan.angle #b
+            # self.x += self.dx
 
-            if self.world.pan.angle < 0:
-                self.vx += (-1)*self.world.pan.angle
-            elif self.world.pan.angle > 0:
-                self.vx += self.world.pan.angle
+            self.dx = self.world.pan.angle #b
+            self.x -= self.dx
+
+            # if self.world.pan.angle < 0:
+            #     self.dx += (-1)*self.world.pan.angle
+            # elif self.world.pan.angle > 0:
+            #     self.dx += self.world.pan.angle
 
             # if self.world.pan.angle
             
@@ -114,7 +120,7 @@ class World:
     def update(self, delta):
         if self.state == World.STATE_FROZEN:
             return
-        if (self.circle.x <= self.pan.width) and self.circle.y <= self.pan.y + 60:
+        if (self.circle.x <= self.pan.width+30) and self.circle.y <= self.pan.y + 60:
             self.circle.update(delta,1)
         else:
             self.circle.update(delta,0)
