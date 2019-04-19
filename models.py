@@ -3,7 +3,6 @@ import arcade
 # SCREEN_TITLE = "Bualoi"
 
 
-
 class Pan:
     TILT_ANGLE = 30
     TILT_BACK = -15
@@ -25,7 +24,8 @@ class Pan:
             pass
         else:
             # self.angle -= 5
-            self.angle -= 1
+            self.angle -= 2
+        
 
 
 class Circle:
@@ -47,6 +47,7 @@ class Circle:
 
     def move(self):
         pass
+
         # self.y += self.dy
         # self.dy -= 0.5
         # self.dy -= Circle.GRAVITY
@@ -66,12 +67,30 @@ class Circle:
     # def draw(self):
     #     # arcade.draw_circle_outline(self.x, self.y, 20, arcade.color.ORANGE_RED)
     #     arcade.draw_circle_filled(self.x, self.y, 20, arcade.color.BLACK)
+
+        
     
     def update(self, delta, way):
         # if self.dy > 0 :
         #     self.dy -= 0.2
 
         if way == 0:
+#b
+            temp_dx = self.dx
+            temp_dy = self.dy
+            if self.x >= self.world.width - self.r or self.x <= self.r or self.y <= self.r:
+                self.world.reset()
+                # self.dx -= temp_dx
+            # elif self.y >= self.world.height - self.r:
+            #     self.dy -= temp_dy
+                # self.dx = (-1)*temp_dx
+                # self.dy = (-1)*temp_dy
+
+            # elif self.x <= self.r:`
+            #     self.dx += temp_dx
+            # elif self.y <= self.r:
+            #     self.dy += temp_dy
+#b 
             self.y += self.dy
             self.dy -= 0.5
             self.dy -= Circle.GRAVITY
@@ -111,7 +130,13 @@ class World:
     
     # def hit(self):
     #     return (self.circle.x <= self.pan.width) and self.circle.y <= self.pan.y
-
+    def reset (self):
+        #น่าจะพังตรงนี้ reset ไม่ได้#ได้และ
+        self.circle.x = 350
+        self.circle.y = 700
+        self.circle.dx = 0
+        self.state = World.STATE_FROZEN #a
+        # self.circle = Circle(self, 350, 700, 0, 0)
 
     def on_key_press(self, key, key_modifiers):
         self.pan.tilt()
