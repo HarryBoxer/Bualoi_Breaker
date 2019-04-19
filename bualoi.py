@@ -1,4 +1,5 @@
 import arcade
+import math
 from random import randint
 from models import World
 from pyglet.window import key
@@ -39,6 +40,20 @@ class ModelSprite(arcade.Sprite):
 #     xs += vxs
 #     ys += vys
 
+# p
+# class ball:
+#     def __init__(self, pan):
+#         self.ball = pan.ball
+#         self.angle = pan.angle
+#         self.x = pan.x
+#         self.y = pan.y
+
+#     def on_draw(self,angle):
+#         for ball in self.ball:
+#             arcade.draw_circle_filled(
+#                 self.x + (ball * math.cos(angle/55)), self.y + (ball * math.sin(angle/55))+20 , 10, arcade.color.YELLOW_ORANGE)
+
+
 class BualoiWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
@@ -48,11 +63,14 @@ class BualoiWindow(arcade.Window):
 
         self.pan = ModelSprite('images/handpan3.png', model=self.world.pan)
         self.circle = ModelSprite('images/cir.png', model=self.world.circle)
+        # self.ball = ball(self.world.pan)
 
     def on_draw(self):
         arcade.start_render()
         self.pan.draw()
         self.circle.draw()
+        # p
+        # self.ball.on_draw(self.world.pan.angle)
 
     def on_key_press(self, key, key_modifiers):
         if not self.world.is_started():
@@ -62,6 +80,9 @@ class BualoiWindow(arcade.Window):
 
     # def on_key_press(self, key, key_modifiers):
     #     self.world.on_key_press(key, key_modifiers)
+
+    def on_key_release(self, key, key_modifiers):
+        self.world.on_key_release(key, key_modifiers)
 
     def update(self, delta):
         self.world.update(delta)
