@@ -63,19 +63,32 @@ class BualoiWindow(arcade.Window):
 
         self.pan = ModelSprite('images/handpan3.png', model=self.world.pan)
         self.circle = ModelSprite('images/cir.png', model=self.world.circle)
+        self.bowl = ModelSprite('images/bowl.png', model=self.world.bowl)
         # self.ball = ball(self.world.pan)
 
     def on_draw(self):
         arcade.start_render()
         self.pan.draw()
         self.circle.draw()
+        self.bowl.draw()
+        self.draw_score()
         # p
         # self.ball.on_draw(self.world.pan.angle)
+
+    def draw_score(self):
+        arcade.draw_text('Score : '+str(self.world.score),
+                         self.width - 80,
+                         self.height - 30,
+                         arcade.color.BLACK,
+                         12, )
 
     def on_key_press(self, key, key_modifiers):
         if not self.world.is_started():
             self.world.start()
+            # self.world.reset()
         if key == arcade.key.SPACE:
+            if self.world.count == 1: 
+                self.world.on_key_press (key,key_modifiers)
             self.world.on_key_press(key, key_modifiers)
 
     # def on_key_press(self, key, key_modifiers):
