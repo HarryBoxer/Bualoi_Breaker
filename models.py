@@ -91,7 +91,7 @@ class Circle:
             temp_dx = self.dx
             temp_dy = self.dy
             if self.x >= self.world.width - self.r:
-                self.dx = -1*(temp_dx) -1
+                self.dx = -1*(temp_dx)
 
             if self.x <= self.r or self.y <= self.r:
                 self.dy = 0
@@ -129,19 +129,19 @@ class Circle:
             #     self.dx += self.world.pan.angle
 
             # if self.world.pan.angle
+        # elif way == 2:
+        #     # self.y += 20
+        #     # self.dy = 20
+        #     # self.dx = 20
+        #     self.dx = -1*(self.dx)
+        #     self.x -= self.dx
+        #     self.y += self.dy
+        #     # self.x += (-1)*self.dx
+
+        #     # self.x -= self.dx
+        #     # self.dx -= self.x
+
         elif way == 2:
-            # self.y += 20
-            # self.dy = 20
-            # self.dx = 20
-            self.dx = -1*(self.dx)
-            self.x -= self.dx
-            self.y += self.dy
-            # self.x += (-1)*self.dx
-
-            # self.x -= self.dx
-            # self.dx -= self.x
-
-        elif way == 3:
             # self.dy = -1*(self.dy)
             # self.y -= self.dy
             self.world.increase_score()
@@ -153,20 +153,23 @@ class Circle:
             # self.dy = (-self.dy)
             # self.y += (-1)*self.dy
         elif way == 4:
-            self.dy = -1*(self.dy) -1
-
+            self.dy = -1*(self.dy) - 1
 
 
 class Bowl:
-    def __init__(self, world, x, y, angle):
+    def __init__(self, world, x, y, angle, radius=25):
         self.world = world
         self.x = x
         self.y = y
         self.angle = angle
+        self.radius = radius
+
+    def draw(self):
+        arcade.draw_circle_filled(
+            self.x, self.y, self.radius, arcade.color.BLACK)
 
     def update(self, delta):
         pass
-        
 
 
 class World:
@@ -203,7 +206,7 @@ class World:
 
         # while self.circle.y > self.bowl.y + 100:
         #     self.circle.y -= 1
-        self.circle.y = self.bowl.y -10
+        self.circle.y = self.bowl.y
         self.circle.x = self.bowl.x
         self.state = World.STATE_FROZEN
 
@@ -219,7 +222,7 @@ class World:
         # self.circle.y = 0
         self.state = World.STATE_FROZEN  # a
         # self.circle = Circle(self, 350, 700, 0, 0)
-    
+
         self.count = 0
 
     # def on_key_press(self, key, key_modifiers):
@@ -228,11 +231,11 @@ class World:
 
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE:
-            # Check what if the circle is in the bowl or not 
+            # Check what if the circle is in the bowl or not
             if self.count == 1:
                 self.reset()
-                xpos = randint(550 , 700)
-                ypos = randint(200 , 500)
+                xpos = randint(550, 700)
+                ypos = randint(200, 500)
                 self.bowl.x = xpos
                 self.bowl.y = ypos
                 self.count = 0
@@ -247,9 +250,10 @@ class World:
             return
         # if (self.circle.x <= self.pan.width+30) and self.circle.y <= self.pan.y + 60:
         hit_pan = False
-        hit_bowl_horizontal = False
-        hit_bowl_vertical = False
-        hit_bowl_under = False
+        hit_bowl = False
+        # hit_bowl_horizontal = False
+        # hit_bowl_vertical = False
+        # hit_bowl_under = False
         xc = self.circle.x
         yc = self.circle.y
         yc2 = self.circle.y - self.circle.dy
@@ -265,17 +269,29 @@ class World:
                 hit_pan = True
         # print(self.pan.x + (ball * math.cos(self.pan.angle/55) ))
 
-        if self.bowl.y - 100 <= self.circle.y <= self.bowl.y + 100:
-            if self.bowl.x - 50 <= self.circle.x <= self.bowl.x - 45:
-                hit_bowl_vertical = True
+        # if (self.bowl.x - self.circle.x)**2 + (self.bowl.y - self.circle.y)**2 <=(self.bowl.radius+10):
+        #     hit_bowl = True
 
-        if self.bowl.y - 100 <= self.circle.y <= self.bowl.y + 100:
-            if self.bowl.x + 45 <= self.circle.x <= self.bowl.x + 50:
-                hit_bowl_vertical = True
+#!!!!!  #detect collision แบบทรงกลม
+        if self.bowl.x-self.bowl.radius-r <= self.circle.x <= self.bowl.x+self.bowl.radius+r and self.bowl.y-self.bowl.radius-r <= self.circle.y <= self.bowl.y+self.bowl.radius+r:
+            hit_bowl = True
+        # if self.bowl.y-self.bowl.radius <= self.circle.y+self.circle.r and self.circle.x+self.circle.r >= self.bowl.x >= self.circle.x-self.circle.r:
+        #     hit_bowl = True
 
-        if self.bowl.y -10 < self.circle.y < self.bowl.y:
-            if self.bowl.x - 30 <= self.circle.x <= self.bowl.x + 40:
-                hit_bowl_horizontal = True
+
+# n
+        # if self.bowl.y - 100 <= self.circle.y <= self.bowl.y + 100:
+        #     if self.bowl.x - 50 <= self.circle.x <= self.bowl.x - 45:
+        #         hit_bowl_vertical = True
+
+        # if self.bowl.y - 100 <= self.circle.y <= self.bowl.y + 100:
+        #     if self.bowl.x + 45 <= self.circle.x <= self.bowl.x + 50:
+        #         hit_bowl_vertical = True
+
+        # if self.bowl.y -10 < self.circle.y < self.bowl.y:
+        #     if self.bowl.x - 30 <= self.circle.x <= self.bowl.x + 40:
+        #         hit_bowl_horizontal = True
+# n
 
         # if self.bowl.y -20 <= self.circle.y <= self.bowl.y -9 :
         #     if self.bowl.x - 30 <= self.circle.x <= self.bowl.x + 40:
@@ -288,17 +304,22 @@ class World:
         #     if self.circle.x <= self.bowl.x - 40
 
         if hit_pan:
-            arcade.play_sound(arcade.load_sound("audio" + os.sep + "panhit.wav"))
+            arcade.play_sound(arcade.load_sound(
+                "audio" + os.sep + "panhit.wav"))
             self.circle.update(delta, 1)
-        elif hit_bowl_vertical:
-            arcade.play_sound(arcade.load_sound("audio" + os.sep + "bowlhit.wav"))
+        elif hit_bowl:
+            arcade.play_sound(arcade.load_sound(
+                "audio" + os.sep + "bowlhit.wav"))
             self.circle.update(delta, 2)
-        elif hit_bowl_horizontal:
-            arcade.play_sound(arcade.load_sound("audio" + os.sep + "bowlhit.wav"))
-            self.circle.update(delta, 3)
-        elif hit_bowl_under:
-            arcade.play_sound(arcade.load_sound("audio" + os.sep + "bowlhit.wav"))
-            self.circle.update(delta, 4)
+        # elif hit_bowl_vertical:
+        #     arcade.play_sound(arcade.load_sound("audio" + os.sep + "bowlhit.wav"))
+        #     self.circle.update(delta, 2)
+        # elif hit_bowl_horizontal:
+        #     arcade.play_sound(arcade.load_sound("audio" + os.sep + "bowlhit.wav"))
+        #     self.circle.update(delta, 3)
+        # elif hit_bowl_under:
+        #     arcade.play_sound(arcade.load_sound("audio" + os.sep + "bowlhit.wav"))
+        #     self.circle.update(delta, 4)
         else:
             self.circle.update(delta, 0)
         self.pan.update(delta)

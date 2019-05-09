@@ -57,20 +57,28 @@ class ModelSprite(arcade.Sprite):
 class BualoiWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
-        arcade.set_background_color(arcade.color.WHITE_SMOKE)
 
         self.world = World(SCREEN_WIDTH, SCREEN_HEIGHT)
 
+        arcade.set_background_color(arcade.color.WHITE_SMOKE)
+        # self.background = arcade.load_texture('images/background.png')
+
         self.pan = ModelSprite('images/handpan3.png', model=self.world.pan)
         self.circle = ModelSprite('images/cir.png', model=self.world.circle)
-        self.bowl = ModelSprite('images/bowl.png', model=self.world.bowl)
+
+        # self.bowl = ModelSprite('images/bowl.png', model=self.world.bowl)
+        # self.bowl = arcade.draw_circle_filled(self.world.circle.x, self.world.circle.y, 20, arcade.color.BLACK)
+
         # self.ball = ball(self.world.pan)
 
     def on_draw(self):
         arcade.start_render()
+        # arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
+        #                               SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
         self.pan.draw()
         self.circle.draw()
-        self.bowl.draw()
+        # self.bowl.draw()
+        arcade.draw_circle_filled(self.world.bowl.x, self.world.bowl.y, self.world.bowl.radius, arcade.color.YALE_BLUE)
         self.draw_score()
         # p
         # self.ball.on_draw(self.world.pan.angle)
@@ -87,8 +95,8 @@ class BualoiWindow(arcade.Window):
             self.world.start()
             # self.world.reset()
         if key == arcade.key.SPACE:
-            if self.world.count == 1: 
-                self.world.on_key_press (key,key_modifiers)
+            if self.world.count == 1:
+                self.world.on_key_press(key, key_modifiers)
             self.world.on_key_press(key, key_modifiers)
 
     # def on_key_press(self, key, key_modifiers):
