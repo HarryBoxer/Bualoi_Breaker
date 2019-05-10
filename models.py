@@ -157,20 +157,30 @@ class Circle:
 
 
 class Bowl:
-    def __init__(self, world, x, y, angle, radius=25):
+    def __init__(self, world, x, y, angle, radius,color):
         self.world = world
         self.x = x
         self.y = y
         self.angle = angle
         self.radius = radius
-
-    def draw(self):
-        arcade.draw_circle_filled(
-            self.x, self.y, self.radius, arcade.color.BLACK)
+        self.color = color
+    # def draw(self):
+        # if self.world.score >= 5:
+        #     self.radius == 20
+        # elif self.world.score >= 15:
+        #     self.radius == 18
+        # elif self.world.score >= 20:
+        #     self.radius == 15
+        # elif self.world.score >= 25:
+        #     self.radius == 10
+        # arcade.draw_circle_filled(
+        #     self.x, self.y, self.radius, arcade.color.BLACK)
 
     def update(self, delta):
         pass
-
+        # if self.world.score >= 1:
+        #     self.radius == 5
+                   
 
 class World:
     STATE_FROZEN = 1  # a
@@ -179,8 +189,8 @@ class World:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.pan = Pan(self, 50, 200, -15, 400)
-        self.bowl = Bowl(self, 650, 450, 0)
+        self.pan = Pan(self, 50, 200, -15, 400)   
+        self.bowl = Bowl(self, 650, 450, 0,30,arcade.color.BLUE_BELL)
         self.state = World.STATE_FROZEN  # a
         self.circle = Circle(self, 350, 700, 0, 0)
         self.score = 0
@@ -189,6 +199,22 @@ class World:
 
         self.spacebar_hold = False
 
+    def draw_new_bowl(self):
+        # test
+        # if self.score >= 1:
+        #     self.bowl.radius = 5  
+        if self.score >= 20:
+            self.bowl.color = arcade.color.RED_DEVIL
+            self.bowl.radius = 10
+        elif self.score >= 15:
+            self.bowl.color = arcade.color.ORANGE
+            self.bowl.radius = 15
+        elif self.score >= 10:
+            self.bowl.color = arcade.color.YELLOW
+            self.bowl.radius = 20
+        elif self.score >= 5:
+            self.bowl.color = arcade.color.WHITE
+            self.bowl.radius = 25
     # def hit_pan(self):
     #     return (self.circle.x <= self.pan.width) and self.circle.y <= self.pan.y
 
@@ -208,7 +234,10 @@ class World:
         #     self.circle.y -= 1
         self.circle.y = self.bowl.y
         self.circle.x = self.bowl.x
+        # self.bowl.draw()
         self.state = World.STATE_FROZEN
+        # if self.score >= 1:
+        #     self.bowl.radius = 5
 
     def get_score(self):
         return self.score
@@ -219,7 +248,9 @@ class World:
         self.circle.y = 700
         self.circle.dx = 0
         self.circle.dy = 0
-        # self.circle.y = 0
+        self.draw_new_bowl()
+        # if self.score >= 1:
+        #     self.bowl.radius = 5        # self.circle.y = 0
         self.state = World.STATE_FROZEN  # a
         # self.circle = Circle(self, 350, 700, 0, 0)
 
@@ -234,8 +265,8 @@ class World:
             # Check what if the circle is in the bowl or not
             if self.count == 1:
                 self.reset()
-                xpos = randint(550, 700)
-                ypos = randint(200, 500)
+                xpos = randint(600, 900)
+                ypos = randint(300, 600)
                 self.bowl.x = xpos
                 self.bowl.y = ypos
                 self.count = 0
