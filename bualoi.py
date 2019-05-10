@@ -4,7 +4,6 @@ from random import randint
 from models import World
 from pyglet.window import key
 
-SCEEN_TITLE = "Bualoi"
 
 SCREEN_WIDTH = 980
 SCREEN_HEIGHT = 720
@@ -38,6 +37,7 @@ class BualoiWindow(arcade.Window):
 
         self.pan = ModelSprite('images/handpan3.png', model=self.world.pan)
         self.circle = ModelSprite('images/cir.png', model=self.world.circle)
+        self.spoon = ModelSprite('images/spoon.png', model=self.world.spoon)
 
     def on_draw(self):
         arcade.start_render()
@@ -48,6 +48,7 @@ class BualoiWindow(arcade.Window):
         arcade.draw_circle_filled(
             self.world.bowl.x, self.world.bowl.y, radius, color)
         self.circle.draw()
+        self.spoon.draw()
         self.draw_score()
 
     def draw_score(self):

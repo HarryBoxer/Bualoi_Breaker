@@ -3,8 +3,6 @@ import math
 import os
 from random import randint
 
-SCEEN_TITLE = "Bualoi"
-
 
 class Pan:
     TILT_UP = 3
@@ -84,6 +82,16 @@ class Circle:
         elif way == 4:
             self.dy = -1*(self.dy) - 1
 
+class Spoon:
+    def __init__(self, world, x, y,angle):
+        self.world = world
+        self.x = x
+        self.y = y
+        self.angle = 0
+    def update(self,delta):
+        pass
+
+
 
 class Bowl:
     def __init__(self, world, x, y, angle, radius, color):
@@ -109,6 +117,8 @@ class World:
         self.bowl = Bowl(self, 650, 450, 0, 30, arcade.color.BLUE_BELL)
         self.state = World.STATE_FROZEN
         self.circle = Circle(self, 350, 700, 0, 0)
+        # self.ball_move_state = World.BALL_STATE
+        self.spoon = Spoon(self,272,700,0)
         self.score = 0
         self.count = 0
 
@@ -118,6 +128,7 @@ class World:
         if self.score >= 20:
             self.bowl.color = arcade.color.RED_DEVIL
             self.bowl.radius = 10
+            
         elif self.score >= 15:
             self.bowl.color = arcade.color.ORANGE
             self.bowl.radius = 15
@@ -130,6 +141,8 @@ class World:
 
     def increase_score(self):
         self.score += 1
+        arcade.play_sound(arcade.load_sound(
+                "audio" + os.sep + "clapping.wav"))
         self.circle.y = self.bowl.y
         self.circle.x = self.bowl.x
         self.state = World.STATE_FROZEN
