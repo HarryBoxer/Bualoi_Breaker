@@ -55,9 +55,9 @@ class ModelSprite(arcade.Sprite):
 
 
 class BualoiWindow(arcade.Window):
+
     def __init__(self, width, height):
         super().__init__(width, height)
-
         self.world = World(SCREEN_WIDTH, SCREEN_HEIGHT)
 
         arcade.set_background_color(arcade.color.WHITE_SMOKE)
@@ -72,23 +72,29 @@ class BualoiWindow(arcade.Window):
         # self.ball = ball(self.world.pan)
 
     def on_draw(self):
+        # temp_radius = self.world.bowl.radius
         arcade.start_render()
         # arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
-        #                               SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+        #                                SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
         self.pan.draw()
+
+        # if self.world.score >= 1:
+        #     temp_radius == 5 
+        radius = self.world.bowl.radius
+        color = self.world.bowl.color
+        arcade.draw_circle_filled(self.world.bowl.x, self.world.bowl.y,radius , color)
         self.circle.draw()
         # self.bowl.draw()
-        arcade.draw_circle_filled(self.world.bowl.x, self.world.bowl.y, self.world.bowl.radius, arcade.color.YALE_BLUE)
         self.draw_score()
         # p
         # self.ball.on_draw(self.world.pan.angle)
 
     def draw_score(self):
         arcade.draw_text('Score : '+str(self.world.score),
-                         self.width - 80,
+                         self.width - 150,
                          self.height - 30,
                          arcade.color.BLACK,
-                         12, )
+                         20, )
 
     def on_key_press(self, key, key_modifiers):
         if not self.world.is_started():
