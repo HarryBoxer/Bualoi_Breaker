@@ -141,8 +141,7 @@ class World:
 
     def increase_score(self):
         self.score += 1
-        arcade.play_sound(arcade.load_sound(
-                "audio" + os.sep + "clapping.wav"))
+        arcade.play_sound(arcade.load_sound("audio/clapping.wav"))
         self.circle.y = self.bowl.y
         self.circle.x = self.bowl.x
         self.state = World.STATE_FROZEN
@@ -199,12 +198,10 @@ class World:
             hit_bowl = True
 
         if hit_pan:
-            arcade.play_sound(arcade.load_sound(
-                "audio" + os.sep + "panhit.wav"))
+            arcade.play_sound(arcade.load_sound("audio/panhit.wav"))
             self.circle.update(delta, 1)
         elif hit_bowl:
-            arcade.play_sound(arcade.load_sound(
-                "audio" + os.sep + "bowlhit.wav"))
+            arcade.play_sound(arcade.load_sound("audio/bowlhit.wav"))
             self.circle.update(delta, 2)
         else:
             self.circle.update(delta, 0)
